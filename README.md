@@ -1,105 +1,122 @@
-# Next.js + Go Full-Stack Project
+# Next.js + Go Full-Stack Project: A Minimal Guide 🚀
 
-A minimal full-stack application with a Next.js frontend and Go backend.
+This document outlines the setup, execution, and structure of a minimal full-stack application featuring a **Next.js frontend** and a **Go backend**.
 
-## Project Structure
+-----
 
-\`\`\`
+## 📂 Project Structure
+
+The application follows a straightforward directory structure:
+
+```
 /
 ├── app/
-│   └── page.tsx          # Frontend form page
+│   └── page.tsx          # Frontend form page
 ├── backend/
-│   ├── main.go           # Go backend server
-│   └── go.mod            # Go module file
+│   ├── main.go           # Go backend server logic
+│   └── go.mod            # Go module file (dependencies)
 └── README.md
-\`\`\`
+```
 
-## Requirements
+-----
 
-- **Frontend**: Node.js 18+ and npm/pnpm/yarn
-- **Backend**: Go 1.21+
+## 🛠️ Requirements
 
-## Running the Backend (Go)
+Ensure you have the correct environments set up for both the frontend and backend:
 
-1. Navigate to the backend directory:
-   \`\`\`bash
-   cd backend
-   \`\`\`
+  * **Frontend**: **Node.js 18+** and **npm/pnpm/yarn**
+  * **Backend**: **Go 1.21+**
 
-2. Run the Go server:
-   \`\`\`bash
-   go run main.go
-   \`\`\`
+-----
 
-   The server will start on `http://localhost:8080`
+## ▶️ Running the Application
 
-## Running the Frontend (Next.js)
+To use the application, you must start the backend server *first*, followed by the frontend development server.
 
-1. From the root directory, install dependencies:
-   \`\`\`bash
-   npm install
-   # or
-   pnpm install
-   # or
-   yarn install
-   \`\`\`
+### 1\. Running the Backend (Go Server)
 
-2. Run the development server:
-   \`\`\`bash
-   npm run dev
-   # or
-   pnpm dev
-   # or
-   yarn dev
-   \`\`\`
+1.  Navigate to the `backend` directory:
 
-   Open [http://localhost:3000](http://localhost:3000) in your browser
+    ```bash
+    cd backend
+    ```
 
-## Usage
+2.  Run the Go server:
 
-1. **Start the Go backend first** (port 8080)
-2. **Then start the Next.js frontend** (port 3000)
-3. Enter a username in the form and click Submit
-4. The backend will respond with a success message
+    ```bash
+    go run main.go
+    ```
 
-## CAPTCHA Integration
+    The server will start and be accessible at **`http://localhost:8080`**.
 
-The `<div id="captcha-container">` is currently a placeholder in the form. You can integrate your preferred CAPTCHA solution (like Google reCAPTCHA, hCaptcha, etc.) by:
+-----
 
-1. Adding the CAPTCHA library script to your application
-2. Initializing the CAPTCHA widget inside the `captcha-container` div
-3. Collecting the CAPTCHA token on form submission
-4. Sending it to the backend for verification
+### 2\. Running the Frontend (Next.js)
 
-The container is left empty intentionally for you to add your chosen CAPTCHA implementation later.
+1.  From the **root directory** (`/`), install the required Node.js dependencies:
 
-## API Endpoint
+    ```bash
+    npm install
+    # or
+    pnpm install
+    # or
+    yarn install
+    ```
 
-### POST /api/submit
+2.  Run the Next.js development server:
 
-**Request:**
-\`\`\`json
-{
-  "username": "example"
-}
-\`\`\`
+    ```bash
+    npm run dev
+    # or
+    pnpm dev
+    # or
+    yarn dev
+    ```
 
-**Success Response (200):**
-\`\`\`json
-{
-  "message": "Hello example, your form was submitted successfully!"
-}
-\`\`\`
+    Open **`http://localhost:3000`** in your browser.
 
-**Error Response (400):**
-\`\`\`json
-{
-  "error": "Invalid JSON format"
-}
-\`\`\`
+-----
 
-## Notes
+### **Usage Flow**
 
-- The backend includes CORS headers to allow requests from the frontend
-- Error handling is implemented for invalid/malformed JSON
-- The form includes basic validation and loading states
+1.  **Start the Go backend first** (port 8080).
+2.  **Then start the Next.js frontend** (port 3000).
+3.  Enter a username in the frontend form and click **Submit**.
+4.  The backend will process the request and respond with a success message.
+
+-----
+
+## 💻 API Endpoint
+
+The frontend communicates with the backend via a single POST endpoint.
+
+### **`POST /api/submit`**
+
+This endpoint handles the form submission.
+
+| Status | Body Structure | Description |
+| :---: | :--- | :--- |
+| **Request** | `{"username": "example"}` | Payload sent from the Next.js frontend. |
+| **Success (200)** | `{"message": "Hello example, your form was submitted successfully!"}` | Returned when the submission is valid. |
+| **Error (400)** | `{"error": "Invalid JSON format"}` | Returned for invalid or malformed JSON payloads. |
+
+-----
+
+## 🛡️ CAPTCHA Integration
+
+The frontend includes a dedicated placeholder for integrating a security solution.
+
+The `<div id="captcha-container">` is currently an empty placeholder in the form. To integrate a CAPTCHA solution (e.g., Google reCAPTCHA, hCaptcha):
+
+1.  Add the **CAPTCHA library script** to your application.
+2.  **Initialize the CAPTCHA widget** inside the `captcha-container` div.
+3.  **Collect the CAPTCHA token** (response) on form submission.
+4.  **Send the token** to the Go backend for server-side verification.
+
+-----
+
+## 📌 Notes
+
+  * **CORS**: The Go backend is configured with **CORS headers** to ensure it accepts requests originating from the Next.js frontend.
+  * **Error Handling**: Basic **error handling** is implemented in the backend to manage invalid or malformed JSON requests.
+  * **Frontend UX**: The form includes basic client-side **validation** and handles **loading states** for a better user experience.
