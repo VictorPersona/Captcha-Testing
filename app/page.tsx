@@ -1,22 +1,30 @@
-"use client"
+"use client";
 
-import { useState, type FormEvent } from "react"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Label } from "@/components/ui/label"
+import { useState, type FormEvent } from "react";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { Turnstile } from "@marsidev/react-turnstile";
 
 export default function Home() {
-  const [username, setUsername] = useState("")
-  const [responseMessage, setResponseMessage] = useState("")
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState("")
+  const [username, setUsername] = useState("");
+  const [responseMessage, setResponseMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [token, setToken] = useState("");
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    setIsLoading(true)
-    setError("")
-    setResponseMessage("")
+    e.preventDefault();
+    setIsLoading(true);
+    setError("");
+    setResponseMessage("");
 
     try {
       const response = await fetch("http://localhost:8080/api/submit", {
@@ -24,29 +32,33 @@ export default function Home() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ username }),
-      })
+        body: JSON.stringify({ username, token }),
+      });
 
-      const data = await response.json()
+      const data = await response.json();
 
       if (response.ok) {
-        setResponseMessage(data.message)
+        setResponseMessage(data.message);
       } else {
-        setError(data.error || "An error occurred")
+        setError(data.error || "An error occurred");
       }
     } catch (err) {
-      setError("Failed to connect to backend. Make sure the Go server is running on port 8080.")
+      setError(
+        "Failed to connect to backend. Make sure the Go server is running on port 8080."
+      );
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4 bg-background">
       <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle>Submit Form</CardTitle>
-          <CardDescription>Enter your username to submit the form</CardDescription>
+          <CardDescription>
+            Enter your username to submit the form
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -63,14 +75,24 @@ export default function Home() {
             </div>
 
             {/* Placeholder for CAPTCHA widget - to be integrated later */}
-            <div
+            {/* <div
               id="captcha-container"
               className="min-h-[78px] border-2 border-dashed border-muted rounded-md flex items-center justify-center text-muted-foreground text-sm"
             >
               CAPTCHA will be integrated here
-            </div>
+            </div> */}
 
-            <Button type="submit" className="w-full" disabled={isLoading}>
+            {/* TurnStile Widget */}
+            <Turnstile
+              siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY!}
+              onSuccess={(newToken) => setToken(newToken)}
+            />
+
+            <Button
+              type="submit"
+              className="w-full"
+              disabled={isLoading || !token}
+            >
               {isLoading ? "Submitting..." : "Submit"}
             </Button>
           </form>
@@ -78,7 +100,9 @@ export default function Home() {
           {/* Response message display */}
           {responseMessage && (
             <div className="mt-4 p-3 bg-green-50 dark:bg-green-950 border border-green-200 dark:border-green-800 rounded-md">
-              <p className="text-green-800 dark:text-green-200 text-sm">{responseMessage}</p>
+              <p className="text-green-800 dark:text-green-200 text-sm">
+                {responseMessage}
+              </p>
             </div>
           )}
 
@@ -91,5 +115,5 @@ export default function Home() {
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }
