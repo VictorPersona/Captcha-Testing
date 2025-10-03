@@ -19,6 +19,7 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const backendAPIURL = process.env.NEXT_PUBLIC_RECAPTCHA_BACKEND;
+  console.log("Connecting to the backend url : ", backendAPIURL);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
