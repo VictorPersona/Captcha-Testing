@@ -19,6 +19,7 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [token, setToken] = useState("");
+  const [fallback, setFallback] = useState(false);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -41,6 +42,7 @@ export default function Home() {
         setResponseMessage(data.message);
       } else {
         setError(data.error || "An error occurred");
+        setFallback(true);
       }
     } catch (err) {
       setError(
@@ -83,10 +85,24 @@ export default function Home() {
             </div> */}
 
             {/* TurnStile Widget */}
-            <Turnstile
+            {/* <Turnstile
               siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY!}
               onSuccess={(newToken) => setToken(newToken)}
-            />
+            /> */}
+
+            {!fallback ? (
+              <Turnstile
+                siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY!}
+                onSuccess={(t) => setToken(t)}
+                options={{ appearance: "interaction-only" }} // non-interactive
+              />
+            ) : (
+              <Turnstile
+                siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY!}
+                onSuccess={(t) => setToken(t)}
+                options={{ appearance: "always" }} // visible puzzle fallback
+              />
+            )}
 
             <Button
               type="submit"
