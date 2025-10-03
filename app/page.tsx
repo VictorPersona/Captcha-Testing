@@ -20,6 +20,8 @@ export default function Home() {
   const [error, setError] = useState("");
   const [token, setToken] = useState("");
   const [fallback, setFallback] = useState(false);
+  const backend_api = process.env.NEXT_PUBLIC_CLOUDFARE_BACKEND;
+  console.log(backend_api);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -28,7 +30,7 @@ export default function Home() {
     setResponseMessage("");
 
     try {
-      const response = await fetch("http://localhost:8080/api/submit", {
+      const response = await fetch(`${backend_api}:8080/api/submit`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
