@@ -47,9 +47,13 @@ func main() {
     }
 
 	http.HandleFunc("/api/submit", handleSubmit)
+	port:= os.Getenv("PORT")
+	if port==""{
+		port = "8080"
+	}
 
-	fmt.Println("Go backend server starting on http://localhost:8080")
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	fmt.Println("Go backend server starting on http://localhost:")
+	log.Fatal(http.ListenAndServe(":"+port, nil))
 }
 
 func handleSubmit(w http.ResponseWriter, r *http.Request) {

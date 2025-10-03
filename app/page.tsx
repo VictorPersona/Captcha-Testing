@@ -31,7 +31,7 @@ export default function Home() {
     console.log(token);
 
     try {
-      const response = await fetch(`${backendAPIURL}:8080/api/submit`, {
+      const response = await fetch(`${backendAPIURL}/api/submit`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -79,12 +79,12 @@ export default function Home() {
             </div>
 
             {/* Placeholder for CAPTCHA widget - to be integrated later */}
-            <div
-              id="captcha-container"
-              className="min-h-[78px] border-2 border-dashed border-muted rounded-md flex items-center justify-center text-muted-foreground text-sm"
-            >
-              CAPTCHA will be integrated here
-            </div>
+            {/* <div
+            id="captcha-container"
+            className="min-h-[78px] border-2 border-dashed border-muted rounded-md flex items-center justify-center text-muted-foreground text-sm"
+          >
+            CAPTCHA will be integrated here
+          </div> */}
 
             <Button type="submit" className="w-full" disabled={isLoading}>
               {isLoading ? "Submitting..." : "Submit"}
