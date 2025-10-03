@@ -30,7 +30,8 @@ export default function Home() {
     setResponseMessage("");
 
     try {
-      const response = await fetch(`${backend_api}:8080/api/submit`, {
+      console.log("Captcha token from client:", token);
+      const response = await fetch(`${backend_api}/api/submit`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -106,11 +107,7 @@ export default function Home() {
               />
             )}
 
-            <Button
-              type="submit"
-              className="w-full"
-              disabled={isLoading || !token}
-            >
+            <Button type="submit" className="w-full" disabled={isLoading}>
               {isLoading ? "Submitting..." : "Submit"}
             </Button>
           </form>
