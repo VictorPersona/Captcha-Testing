@@ -18,6 +18,7 @@ export default function Home() {
   const [responseMessage, setResponseMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const backendAPIURL = process.env.NEXT_PUBLIC_RECAPTCHA_BACKEND;
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -29,7 +30,7 @@ export default function Home() {
     console.log(token);
 
     try {
-      const response = await fetch("http://localhost:8080/api/submit", {
+      const response = await fetch(`${backendAPIURL}:8080/api/submit`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
