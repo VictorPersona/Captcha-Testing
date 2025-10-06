@@ -16,6 +16,12 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
+# testing
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+
 # env files
 .env*
 
